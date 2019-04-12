@@ -34,7 +34,9 @@ class Graph extends Component {
     return eval(newFunc);
   }
 
-  generateGraph() {
+  generateGraph(e) {
+    e.preventDefault();
+
     let newGraph = [];
     const { currFunc, funcHistory, func, lowRange, highRange } = this.state;
 
@@ -95,7 +97,7 @@ class Graph extends Component {
           Now, enter your mathematical function, then click Graph to display the
           expression on the graph below
         </h4>
-        <form style={{ marginTop: -20 }}>
+        <form onSubmit={this.generateGraph} style={{ marginTop: -20 }}>
           y ={" "}
           <input
             name="func"
@@ -104,9 +106,7 @@ class Graph extends Component {
             onChange={this.handleChange}
           />
           <div className="buttons">
-            <button type="button" onClick={this.generateGraph}>
-              Graph
-            </button>
+            <button type="submit">Graph</button>
             <button
               type="button"
               onClick={() =>
