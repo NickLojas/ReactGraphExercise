@@ -10,7 +10,7 @@ class Graph extends Component {
       func: "x",
       currFunc: "x",
       funcHistory: [],
-      lowRange: 1,
+      lowRange: -10,
       highRange: 10,
       data: [{ argument: 1, value: 1 }]
     };
@@ -85,12 +85,9 @@ class Graph extends Component {
           For multiplying, make sure to use the asterisk (ie. y=2x becomes
           y=2*x)
         </p>
-        <h4>
-          First, you can change the range of the graph here (starts at x=1)
+        <h4 style={{ marginBottom: 5 }}>
+          First, you can change the range of the graph here
         </h4>
-        <p style={{ marginTop: -25 }}>
-          *If the graph goes blank, try reducing the range
-        </p>
         <FieldManager
           lowRange={lowRange}
           highRange={highRange}
