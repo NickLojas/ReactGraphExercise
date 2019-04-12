@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PlotGraph from "./PlotGraph";
 import History from "./History";
+import FieldManager from "./FieldManager";
 
 class Graph extends Component {
   constructor(props) {
@@ -16,15 +17,20 @@ class Graph extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleHistory = this.handleHistory.bind(this);
+    this.resetFields = this.resetFields.bind(this);
     this.generateGraph = this.generateGraph.bind(this);
   }
 
   handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value.toLowerCase() });
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleHistory(e) {
     this.setState({ func: e.target.value });
+  }
+
+  resetFields() {
+    this.setState({ func: "x", lowRange: 1, highRange: 10 });
   }
 
   functionFromExpression(x) {
@@ -42,11 +48,11 @@ class Graph extends Component {
     const { currFunc, funcHistory, func, lowRange, highRange } = this.state;
 
     try {
-      for (var i = lowRange; i < highRange; i++) {
-        newGraph[i - 1] = {
+      for (let i = lowRange; i <= highRange; i++) {
+        newGraph.push({
           argument: i,
           value: this.functionFromExpression(i)
-        };
+        });
       }
 
       if (funcHistory.indexOf(func) === -1) {
@@ -64,7 +70,14 @@ class Graph extends Component {
   }
 
   render() {
-    const { currFunc, data, funcHistory } = this.state;
+    const {
+      lowRange,
+      highRange,
+      func,
+      currFunc,
+      data,
+      funcHistory
+    } = this.state;
     return (
       <div>
         <h6>Reminder:</h6>
@@ -76,48 +89,16 @@ class Graph extends Component {
           First, you can change the range of the graph here (starts at x=1)
         </h4>
         <p style={{ marginTop: -25 }}>
-          If the graph goes blank, try reducing the range
+          *If the graph goes blank, try reducing the range
         </p>
-        <div className="rangeInputs">
-          <input
-            name="lowRange"
-            type="number"
-            value={this.state.lowRange}
-            onChange={this.handleChange}
-            style={{ width: "3%" }}
-          />
-          <input
-            name="highRange"
-            type="number"
-            value={this.state.highRange}
-            onChange={this.handleChange}
-            style={{ width: "3%" }}
-          />
-        </div>
-        <h4>
-          Now, enter your mathematical function, then click Graph to display the
-          expression on the graph below
-        </h4>
-        <form onSubmit={this.generateGraph} style={{ marginTop: -20 }}>
-          y ={" "}
-          <input
-            name="func"
-            type="text"
-            value={this.state.func}
-            onChange={this.handleChange}
-          />
-          <div className="buttons">
-            <button type="submit">Graph</button>
-            <button
-              type="button"
-              onClick={() =>
-                this.setState({ func: "x", lowRange: 1, highRange: 10 })
-              }
-            >
-              Reset
-            </button>
-          </div>
-        </form>
+        <FieldManager
+          lowRange={lowRange}
+          highRange={highRange}
+          func={func}
+          handleChange={this.handleChange}
+          generateGraph={this.generateGraph}
+          resetFields={this.resetFields}
+        />
         <History funcHistory={funcHistory} handleHistory={this.handleHistory} />
         <PlotGraph data={data} currFunc={currFunc} />
       </div>
