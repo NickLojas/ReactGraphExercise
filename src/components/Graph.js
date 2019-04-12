@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PlotGraph from "./PlotGraph";
+import History from "./History";
 
 class Graph extends Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class Graph extends Component {
   }
 
   render() {
-    const { currFunc, data } = this.state;
+    const { currFunc, data, funcHistory } = this.state;
     return (
       <div>
         <h6>Reminder:</h6>
@@ -117,19 +118,7 @@ class Graph extends Component {
             </button>
           </div>
         </form>
-        <div className="history">
-          <h6 style={{ marginBottom: 0 }}>History</h6>
-          {this.state.funcHistory.map((value, index) => (
-            <button
-              type="button"
-              key={index}
-              onClick={this.handleHistory}
-              value={value}
-            >
-              {value}
-            </button>
-          ))}
-        </div>
+        <History funcHistory={funcHistory} handleHistory={this.handleHistory} />
         <PlotGraph data={data} currFunc={currFunc} />
       </div>
     );
